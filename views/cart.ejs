@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <%- include('links'); %>
+</head>
+
+<body>
+    <%- include('Header'); %>
+        <section>
+            <div class="overflow-hidden">
+                <div class="container-fluid p-0 m-0">
+                    <div class="Custom_paddding_wesite">
+                        <div class="col-md-12">
+                            <div class="pt-5 pb-5 align-items-center">
+                                <p class="font-size-cart ">Cart</p>
+                            </div>
+                        </div>
+                        <div class="row " id="table-res">
+                            <div class="col-md-12 mb-4 ">
+                              
+                                <div class="table-responsive">
+                                
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Products</th>
+                                                <th scope="col">Size</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col"></th>
+                                                <th scope="col">Price</th>
+                                            </tr>
+                                        </thead>
+                                   
+       
+                                  
+                                   
+                                   
+                                        
+                                         <!-- <tbody>
+                                            <% if (Cart.length > 0) { %>
+                                                <% for (let i = 0; i < Cart.length; i++) { 
+                                                    const productPrice = parseFloat(Cart[i].productDetails.product_price);
+                                                    const quantity = parseInt(Cart[i].quantity);
+                                                    const itemTotalPrice = productPrice * quantity;
+                                                %>
+                                                <tr data-product-id="<%= Cart[i].productId %>">
+                                                    <td data-label="Products" class="product-image-setup-box">
+                                                        <div class="d-flex align-items-center product-image-box">
+                                                            <img src="<%= Cart[i].productDetails.images[0] %>" alt="Product Image" class="img-fluid" width="150px">
+                                                            <div class="ml-4 font-size-table details-text-box">
+                                                                <p class="font-size-product-text details-text"> <%= Cart[i].productDetails.product_name %></p>
+                                                                <p class="font-size-price">₹ <%= Cart[i].productDetails.product_price %></p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Size">
+                                                        <div class="size-box-table text-center">
+                                                            <span>A3 Without Laminate</span>
+                                                            <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M0 0C0 0 3.4 4.4 3.5 4.4C3.7 4.4 7.1 0 7.1 0H0Z" fill="#101010" />
+                                                            </svg>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Quantity">
+                                                        <div class="size-box-table text-center">
+                                                            <div class="btn-quantity">
+                                                                <div class="decrease" data-product-id="<%= Cart[i].productId %>">-</div>
+                                                                <div>
+                                                                    <input class="quantity-input" id="quantity-input-<%= i %>" type="number" value="<%= Cart[i].quantity %>" min="1">
+                                                                </div>
+                                                                <div class="increase" data-product-id="<%= Cart[i].productId %>">+</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit"  onclick="delete_Cart_data('<%= Cart[i]._id %>',this,'Delete-CartItem')" class="btn_loader" style="background-color: black; text-align: center; align-items: center; color: white; padding: 10px;">
+                                                            <span class="pl-4 pr-4">
+                                                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                                            </span>
+                                                        </button>
+                                                    </td>
+                                                    <td data-label="Price" class="font-size-price item-price" data-price=" <%= itemTotalPrice %>">
+                                                        ₹<%= itemTotalPrice %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="5" class="text-center">No items in the cart</td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                            -->
+                                        
+                                   
+                                            <tbody>
+                                                <% let totalCartPrice = 0; %>
+                                                <% if (Cart.length > 0) { %>
+                                                    <% for (let i = 0; i < Cart.length; i++) { 
+                                                        const productPrice = parseFloat(Cart[i].productDetails.product_price);
+                                                        const quantity = parseInt(Cart[i].quantity);
+                                                        const itemTotalPrice = productPrice * quantity;
+                                                        totalCartPrice += itemTotalPrice;
+                                                    %>
+                                                    <tr data-product-id="<%= Cart[i].productId %>">
+                                                        <td data-label="Products" class="product-image-setup-box">
+                                                            <div class="d-flex align-items-center product-image-box">
+                                                                <img src="<%= Cart[i].productDetails.images[0] %>" alt="Product Image" class="img-fluid" width="150px">
+                                                                <div class="ml-4 font-size-table details-text-box">
+                                                                    <p class="font-size-product-text details-text"><%= Cart[i].productDetails.product_name %></p>
+                                                                    <p class="font-size-price">₹ <%= Cart[i].productDetails.product_price %></p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td data-label="Size">
+                                                            <div class="size-box-table text-center">
+                                                                <span>A3 Without Laminate</span>
+                                                                <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M0 0C0 0 3.4 4.4 3.5 4.4C3.7 4.4 7.1 0 7.1 0H0Z" fill="#101010" />
+                                                                </svg>
+                                                            </div>
+                                                        </td>
+                                                        <td data-label="Quantity">
+                                                            <div class="size-box-table text-center">
+                                                                <div class="btn-quantity">
+                                                                    <div class="decrease" data-product-id="<%= Cart[i].productId %>">-</div>
+                                                                    <div>
+                                                                        <input class="quantity-input" id="quantity-input-<%= i %>" type="number" value="<%= Cart[i].quantity %>" min="1">
+                                                                    </div>
+                                                                    <div class="increase" data-product-id="<%= Cart[i].productId %>">+</div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button type="submit" onclick="delete_Cart_data('<%= Cart[i]._id %>',this,'Delete-CartItem')" class="btn_loader" style="background-color: black; text-align: center; align-items: center; color: white; padding: 5px; border-radius: 5px;">
+                                                                <span class="pl-2 pr-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                                                </span>
+                                                            </button>
+                                                        </td>
+                                                        <td data-label="Price" class="font-size-price item-price subtotal-amount" data-price="<%= itemTotalPrice %>">
+                                                            ₹<%= itemTotalPrice %>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">No items in the cart</td>
+                                                    </tr>
+                                                <% } %>
+                                            </tbody>
+                                         
+                                            
+                                        
+                                    </table>
+                                    
+                             
+                                </div>
+                            </div>
+    
+    
+                       
+    
+                            <div class="col-md-6 custom-padding">
+    
+                                <p class="font-size"> Discount code</p>
+                                <div class="p-0 mb-0 applycode-box">
+                                    <input type="text" class="form-control mb-0" placeholder="Enter discount code"
+                                        id="input-text-code">
+                                    <div class="applycode-box-txt">
+                                        <span>Apply code</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 custom-padding ">
+                                <div class="d-flex justify-content-end final-price">
+                                    <p class="font-size">Total: ₹<%= totalCartPrice.toFixed(2) %></p>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <p>Shipping & taxes calculated at checkout</p>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <a href="/checkout" >
+                                        <button class="checkout-btn" >
+                                            <span class="p-4">Checkout</span>
+                                        </button>
+    
+                                    </a>
+                                </div>
+                            </div>
+    
+                        </div>
+
+                    </div>
+                  
+
+
+
+                </div>
+            </div>
+        </section>
+
+        <%- include('footer'); %>
+
+
+
+            <%- include('scripts'); %>
+         
+
+            
+       
+        
+            
+            
+            
+            
+
+</body>
+
+</html>

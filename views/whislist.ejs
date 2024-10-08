@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+    <%- include('links'); %>
+</head>
+
+<body>
+    <%- include('Header'); %>
+
+
+        <section>
+            <div class="overflow-hidden">
+                <div class="container-fluid p-0 m-0">
+                    <div class="Custom_paddding_wesite">
+                        <div class="col-md-12 pt-5 pb-5 align-items-center  ">
+                            <p class="font-size-cart ">Wishlist</p>
+                        </div>
+                        <div class="row  custom-padding" id="table-res">
+                            <div class="col-md-12 mb-4 ">
+                            
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Products</th>
+                                              
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Stocklist</th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% if (Whishlist.length === 0) { %>
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No wishlist items present</td>
+                                                </tr>
+                                            <% } else { 
+                                                for (let i = 0; i < Whishlist.length; i++) { 
+                                                    const productPrice = parseFloat(Whishlist[i].productDetails.product_price);
+                                            %>
+                                            
+                                                <tr>
+                                                    <td data-label="Products" class="product-image-setup-box font-size">
+                                                        <div class="d-flex align-items-center product-image-box">
+                                                            <img src="<%= Whishlist[i].productDetails.images[0] %>" alt="Product Image" class="img-fluid" width="150px">
+                                                            <div class="ml-4 font-size-table details-text-box">
+                                                                <p class="font-size-product-text details-text"><%= Whishlist[i].productDetails.product_name %></p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Price" class="font-size-price">₹<%= Whishlist[i].productDetails.product_price %></td>
+                                                    <td data-label="Stocklist"><%= Whishlist[i].productDetails.stock %></td>
+                                                    <td class="remove-btn-res">
+                                                        <button type="submit" onclick="delete_Cart_data('<%= Whishlist[i]._id %>', this, 'Delete-WishlistItem')" class="remove-btn-box btn_loader" >
+                                                            <span class="pl-4 pr-4">Remove</span><i class="ti-close"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                    <form onsubmit="sendDatatocart(event,this)"
+                                                    data-method="add_to_cart_form">
+                                                    <input type="hidden" name="product_name"
+                                                        value="<%= Whishlist[i].productDetails.product_name %>">
+                                                    <input type="hidden" name="productId"
+                                                        value="<%= Whishlist[i].productDetails.productId %>">
+                                                    <div>
+                                                        <button type="submit" class="remove-btn-box btn_loader" ><span>  Add To Cart</span></button>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                                </tr>
+                                            <% } } %>
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                            
+                      
+                                      
+                                       
+                                  
+                                        
+                                      
+                                        
+                           
+                         
+                         
+                       
+                        </div>
+
+                    </div>
+                   
+                    
+
+                </div>
+            </div>
+        </section>
+
+        <%- include('footer'); %>
+
+
+
+            <%- include('scripts'); %>
+
+</body>
+
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>categories page</title>
+    <%- include('links'); %>
+
+</head>
+<style>
+  .all-btn {
+  
+    border-radius: 40px;
+    align-items: center;
+    text-align: center;
+    width: 100px;
+    padding: 7px;
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.all-btn-box a {
+    color: black;
+    justify-content: space-between;
+    margin-left: 30px;
+    margin-right: 30px;
+    cursor: pointer;
+    text-decoration: none; 
+}
+
+.all-btn-box a.active {
+    background-color: black; 
+    color: white;
+}
+.category-slider {
+        display: flex; 
+        overflow: hidden; 
+        width: 100%;
+    }
+
+    .category-slider a {
+        color: black;
+        margin: 0 15px;
+        cursor: pointer;
+        text-decoration: none; 
+        position: relative;
+    }
+
+    .category-slider a.active {
+        background-color: black; 
+        color: white;
+    }
+    .subcategory_anime{
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+    .subcategory_anime li{
+
+      margin: 10px;
+      list-style: none;
+        
+    }
+    .subcategory_anime li a{
+
+color: black;
+  
+}
+</style>
+
+<body>
+    <%- include('Header'); %>
+
+<section>
+    <div >
+        <div class="container-fluid p-0 m-0">
+            <div class="pt-4 Custom_paddding_wesite">
+         
+                
+                    <div class="category-slider">
+                        <a href="/categories?category=All" class="all-btn <%= activeCategory === 'All' ? 'active' : '' %>">All</a>
+                        <a href="/categories?category=Anime" class="all-btn <%= activeCategory === 'Anime' ? 'active' : '' %>">Anime</a>
+                        <a href="/categories?category=Supercars" class="all-btn <%= activeCategory === 'Supercars' ? 'active' : '' %>">Supercars</a>
+                        <a href="/categories?category=Game" class="all-btn <%= activeCategory === 'Game' ? 'active' : '' %>">Game</a>
+                        <a href="/categories?category=Aesthetic" class="all-btn <%= activeCategory === 'Aesthetic' ? 'active' : '' %>">Aesthetic</a>
+                        <a href="/categories?category=Cartoon" class="all-btn <%= activeCategory === 'Cartoon' ? 'active' : '' %>">Cartoon</a>
+                        <a href="/categories?category=Movie" class="all-btn <%= activeCategory === 'Movie' ? 'active' : '' %>">Movie</a>
+                        <a href="/categories?category=Marvel" class="all-btn <%= activeCategory === 'Marvel' ? 'active' : '' %>">Marvel</a>
+                        <a href="/categories?category=DC" class="all-btn <%= activeCategory === 'DC' ? 'active' : '' %>">DC</a>
+                        <a href="/categories?category=Brutalism" class="all-btn <%= activeCategory === 'Brutalism' ? 'active' : '' %>">Brutalism</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section>
+    <div class="overflow-hidden">
+        <div class="container-fluid p-0 m-0">
+            <div class="pt-4 mb-4">
+                <div class="row">
+                    <!-- Product List Section -->
+                    <div class="col-md-9">
+                        <div class="row" id="card">
+                            <% for(let i=0; i < Product.length; i++) { %>
+                                <div class="col-md-4 line-border main_box_product mb-0" id="border-right-setup">
+                                    <div class="product_image_alinment_setup">
+                                        <div class="pt-4">
+                                            <div class="pt-4 Custom_paddding_wesite">
+                                                <img onclick="window.location.href='/productdetails/<%= Product[i]._id %>'" src="<%= Product[i].images[0] %>" alt="Product Image" width="100%" class="image-setup">
+                                                <div class="text-center pt-4 mb-4 ">
+                                                    <p id="product-name-<%= Product[i]._id %>" class="font_size_card_title truncate-two-lines">
+                                                        <%= Product[i].product_name %>
+                                                    </p>
+                                                    <p class="font-size-price text-center">₹<%= Product[i].product_price %></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center pb-4">
+                                        <a class="product-details-see-icon mr-2"
+                                            onclick="window.location.href='/productdetails/<%= Product[i]._id %>'">
+                                            <svg width="42" height="42" viewBox="0 0 42 42" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M31.2524 20.0465C31.5668 20.4875 31.7241 20.7081 31.7241 21.0345C31.7241 21.3608 31.5668 21.5814 31.2524 22.0224C29.8391 24.0041 26.2301 28.2758 21.3792 28.2758C16.5283 28.2758 12.9194 24.0041 11.5062 22.0224C11.1917 21.5814 11.0344 21.3608 11.0344 21.0345C11.0344 20.7081 11.1917 20.4875 11.5062 20.0465C12.9194 18.0649 16.5283 13.7931 21.3792 13.7931C26.2301 13.7931 29.8391 18.0649 31.2524 20.0465Z"
+                                                    stroke="#141414" stroke-width="1.55172" />
+                                                <path
+                                                    d="M24.4827 21.0345C24.4827 19.3204 23.0932 17.931 21.3792 17.931C19.6652 17.931 18.2758 19.3204 18.2758 21.0345C18.2758 22.7485 19.6652 24.1379 21.3792 24.1379C23.0932 24.1379 24.4827 22.7485 24.4827 21.0345Z"
+                                                    stroke="#141414" stroke-width="1.55172" />
+                                                <circle cx="20.6896" cy="20.6896" r="20" stroke="#141414"
+                                                    stroke-width="1.37931" />
+                                            </svg>
+
+                                        </a>
+                                        <form onsubmit="sendDatawhishlist(event,this)"
+                                            data-method="add_to_whislist_form">
+                                            <input type="hidden" name="product_name"
+                                                value="<%= Product[i].product_name %>">
+                                            <input type="hidden" name="productId" value="<%= Product[i].productId %>">
+                                            <div>
+                                                <button type="submit" class="add-cart-hover btn_loader"><span>
+                                                        <svg  width="42" height="42" viewBox="0 0 42 42"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="21" cy="20.6896" r="20" stroke="#141414"
+                                                                stroke-width="1.37931" />
+                                                            <path
+                                                                d="M27.1759 14.6158C24.9566 13.2545 23.0196 13.8031 21.856 14.677C21.3788 15.0353 21.1403 15.2144 21 15.2144C20.8596 15.2144 20.6211 15.0353 20.1439 14.677C18.9804 13.8031 17.0434 13.2545 14.8241 14.6158C11.9115 16.4024 11.2524 22.2965 17.9706 27.269C19.2502 28.2161 19.89 28.6896 21 28.6896C22.1099 28.6896 22.7497 28.2161 24.0294 27.269C30.7475 22.2965 30.0884 16.4024 27.1759 14.6158Z"
+                                                                stroke="#141414" stroke-width="1.55862"
+                                                                stroke-linecap="round" />
+                                                        </svg>
+
+                                                    </span></button>
+                                            </div>
+                                        </form>
+
+                                        <form onsubmit="sendDatatocart(event,this)" data-method="add_to_cart_form">
+                                            <input type="hidden" name="product_name"
+                                                value="<%= Product[i].product_name %>">
+                                            <input type="hidden" name="productId" value="<%= Product[i].productId %>">
+                                            <div>
+                                                <button type="submit" class="add-cart-hover btn_loader"><span>
+                                                        <svg id="success-svg"  width="42" height="42" viewBox="0 0 42 42"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="21.3104" cy="20.6896" r="20" stroke="#141414"
+                                                                stroke-width="1.37931" />
+                                                            <path
+                                                                d="M14.6911 24.7509L13.813 19.5128C13.6802 18.7208 13.6138 18.3248 13.8264 18.0652C14.039 17.8057 14.4297 17.8057 15.2111 17.8057H26.0299C26.8113 17.8057 27.202 17.8057 27.4146 18.0652C27.6271 18.3248 27.5607 18.7208 27.428 19.5128L26.5499 24.7509C26.2589 26.487 26.1133 27.3551 25.5191 27.8699C24.925 28.3846 24.0685 28.3846 22.3556 28.3846H18.8854C17.1725 28.3846 16.316 28.3846 15.7218 27.8699C15.1277 27.3551 14.9821 26.487 14.6911 24.7509Z"
+                                                                stroke="#141414" stroke-width="1.55862" />
+                                                            <path
+                                                                d="M24.6332 17.8058C24.6332 15.5896 22.8367 13.7931 20.6205 13.7931C18.4043 13.7931 16.6078 15.5896 16.6078 17.8058"
+                                                                stroke="#141414" stroke-width="1.55862" />
+                                                        </svg>
+                                                    </span></button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+
+        
+                    <div class="col-md-3 line-border" id="border-right-setup">
+                        <div class="subcategory-list pt-4 ">
+                      
+                            <div id="subcategory-anime" class="<%= activeCategory === 'Anime' ? 'd-block' : 'd-none' %>">
+                                <h4 class="ml-4">Anime</h4>
+                                <ul class="subcategory_anime">
+                                    <li><a href="#">My Hero Academia</a></li>
+                                    <li><a href="#">Death Note</a></li>
+                                    <li><a href="#">Naruto</a></li>
+                                    <li><a href="#">Black Clover</a></li>
+                                    <li><a href="#">Attack on Titan</a></li>
+                                    <li><a href="#">Solo Leveling</a></li>
+                                    <li><a href="#">20th Century Boys</a></li>
+                                    <li><a href="#">Baki</a></li>
+                                    <li><a href="#">Vagabond</a></li>
+                                    <li><a href="#">Chainsaw Man</a></li>
+                                    <li><a href="#">Demon Slayer</a></li>
+                                    <li><a href="#">Dragon Ball</a></li>
+                                    <li><a href="#">Jujutsu Kaisen</a></li>
+                                    <li><a href="#">One Piece</a></li>
+                                    <li><a href="#">One Punch Man</a></li>
+                                </ul>
+                                
+                            </div>
+
+                            <!-- Game Subcategory -->
+                            <div id="subcategory-game" class="<%= activeCategory === 'Game' ? 'd-block' : 'd-none' %>">
+                                <h4 class="ml-4">Game</h4>
+                                <ul  class="subcategory_anime">
+                                    <li><a href="#">Grand Theft Auto</a></li>
+                                    <li><a href="#">Minecraft</a></li>
+                                    <li><a href="#">League of Legends</a></li>
+                                    <li><a href="#">Apex Legends</a></li>
+                                    <li><a href="#">Red Dead Redemption</a></li>
+                                    <li><a href="#">Valorant</a></li>
+                                    <li><a href="#">Cyberpunk</a></li>
+                                    <li><a href="#">Overwatch</a></li>
+                                    <li><a href="#">Elden Ring</a></li>
+                                    <li><a href="#">Black Myth: Wukong</a></li>
+                                    <li><a href="#">Call of Duty</a></li>
+                                    <li><a href="#">Counter Strike</a></li>
+                                </ul>
+                                
+                            </div>
+                            <div id="subcategory-Supercars" class="<%= activeCategory === 'Supercars' ? 'd-block' : 'd-none' %>">
+                                <h4 class=" ml-4">Supercars</h4>
+                                <ul class="subcategory_anime">
+                                    <li>Grand Theft Auto</li>
+                                    <li>Minecraft</li>
+                                    <li>League of Legends</li>
+                                 
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="line-border"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+    function switchCategory(category) {
+        document.querySelectorAll('.subcategory-list div').forEach(div => {
+            div.classList.add('d-none');
+        });
+        document.getElementById(`subcategory-${category}`).classList.remove('d-none');
+    }
+    if ('<%= activeCategory %>' === 'All') {
+        document.querySelectorAll('.subcategory-list div').forEach(div => {
+            div.classList.remove('d-none');
+        });
+    }
+</script>
+
+
+
+
+
+
+
+
+
+        <%- include('footer'); %>
+
+            <%- include('scripts'); %>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+         
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+       <script>
+        $(document).ready(function() {
+
+    $('.category-slider').slick({
+        centerMode: true,
+        centerPadding: '600px',
+        slidesToShow: 2,
+        infinite: true,
+        arrows: true, 
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 3
+                }
+            }
+        ]
+    });
+
+    let lastScrollTop = 0;
+    $('.category-slider').on('wheel', function(e) {
+        e.preventDefault(); 
+        
+        let st = e.originalEvent.deltaY; 
+
+        if (st > 0) {
+            $(this).slick('slickNext'); 
+        } else {
+      
+            $(this).slick('slickPrev'); 
+        }
+    });
+});
+
+       </script>
+
+
+
+
+
+</body>
+
+</html>

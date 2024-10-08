@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Dteails </title>
+    <%- include('links'); %>
+
+
+</head>
+
+<body>
+    <%- include('Header'); %>
+
+<script>
+let currentImageIndex = 0;
+
+// Function to select and display the image
+function selectImage(element) {
+    var containers = document.querySelectorAll('.image-container');
+    containers.forEach(function (container) {
+        container.classList.remove('selected');
+    });
+
+    element.classList.add('selected');
+    var selectedImageSrc = element.getAttribute('data-image-src');
+    document.getElementById('mainImage').setAttribute('src', selectedImageSrc);
+}
+
+// Scroll images when the button is clicked
+function scrollImages(direction) {
+    var container = document.querySelector('.vertical-scroll-container');
+    var containers = document.querySelectorAll('.image-container');
+    var imageHeight = 180; // Fixed height of each image container (160px + padding)
+
+    if (direction === 'up' && currentImageIndex > 0) {
+        currentImageIndex--;
+    } else if (direction === 'down' && currentImageIndex < containers.length - 1) {
+        currentImageIndex++;
+    }
+
+    // Scroll the container
+    container.scrollTo({
+        top: currentImageIndex * imageHeight,
+        behavior: 'smooth'
+    });
+
+    // Automatically select the image that becomes visible after the scroll
+    selectImage(containers[currentImageIndex]);
+}
+
+// Automatically select the first image (index 0) when the page loads
+window.onload = function() {
+    var firstImageContainer = document.querySelectorAll('.image-container')[0];
+    if (firstImageContainer) {
+        selectImage(firstImageContainer);
+    }
+};
+
+
+</script>
+<style>
+
+.vertical-scroll-container {
+    max-height:100%; 
+    overflow-y: hidden; 
+    padding-right: 10px;
+    position: relative;
+ 
+}
+
+.scrollable-image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover; 
+    cursor: pointer;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.image-container.selected {
+    border: 2px solid red;
+}
+
+#mainImage {
+    max-width: 100%;
+    height: 100%; 
+}
+
+.scroll-button {
+    width: 100%;
+background-color: transparent;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.scroll-button:focus {
+    outline: none;
+}
+
+.image-container {
+    width:200px;
+    height: 200px;
+}
+
+        </style>
+        <section>
+            <div class="overflow-hidden">
+                <div class="container-fluid p-0 m-0">
+                    <div class="row Custom_paddding_wesite pt-5 pb-5">
+                    
+                            <div class="col-md-3 mb-4">
+                                <div class="image-box-setup pt-4">
+                                    <button class="scroll-button" id="scrollUp" onclick="scrollImages('up')">⬆</button>
+                                    <div class="vertical-scroll-container pt-4 mb-4">
+                                        <div class="d-flex justify-content-center" >
+                                            <img class="image-container mb-3" onclick="selectImage(this)" data-image-src="<%= Product.images[0] %>" src="<%= Product.images[0] %>" alt="Image 1" class="scrollable-image">
+                                        </div>
+                                        <% Product.images.forEach((image, index) => { if (index !== 0) { %> 
+                                        <div  class="d-flex justify-content-center"  >
+                                            <img class="image-container mb-3" onclick="selectImage(this)" data-image-src="<%= image %>" src="<%= image %>" alt="Image <%= index + 1 %>" class="scrollable-image">
+                                        </div>
+                                        <% } }); %>
+                                    </div>
+                                    <button class="scroll-button" id="scrollDown" onclick="scrollImages('down')">⬇</button>
+                                </div>
+                            </div>
+                        
+                            <!-- Right side to display selected image -->
+                            <div class="col-md-3 mb-4">
+                                <div class="image-box-setup">
+                                    <div class="pt-4">
+                                        <div class="d-flex justify-content-center">
+                                            <img id="mainImage" src="<%= Product.images[0] %>" alt="Main Image" style="width: 100%; height: 100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                        
+                        
+                        
+                        <!-- <div class="col-md-3 mb-4">
+                            <div class="image-box-setup">
+                                <div class="pt-4 mb-4">
+                                    <div class="mb-4 pt-4">
+                                        <div class="ml-4 mb-4">
+                                            <div class="vertical-scroll-container">
+                                                <div class="image-container mb-3" onclick="selectImage(this)">
+                                                    <img src="../public/assets/Rectangle 26.png" alt="Slide 1">
+                                                </div>
+                                                <div class="image-container mb-3" onclick="selectImage(this)">
+                                                    <img src="../public/assets/image 1 (2).png" alt="Slide 2">
+                                                </div>
+                                                <div class="image-container mb-3" onclick="selectImage(this)">
+                                                    <img src="../public/assets/Rectangle 28.png" alt="Slide 3">
+                                                </div>
+                                            </div>
+                                            <script>
+                                                $('.slider-for').slick({
+                                                    slidesToShow: 1,
+                                                    slidesToScroll: 1,
+                                                    arrows: false,
+                                                    fade: true,
+                                                    asNavFor: '.slider-nav'
+                                                });
+                                                $('.slider-nav').slick({
+                                                    slidesToShow: 3,
+                                                    slidesToScroll: 1,
+                                                    asNavFor: '.slider-for',
+                                                    dots: true,
+                                                    centerMode: true,
+                                                    focusOnSelect: true
+                                                });
+                                            </script>
+
+                                            <script>
+                                                function selectImage(element) {
+                                                    var containers = document.querySelectorAll('.image-container');
+                                                    containers.forEach(function (container) {
+                                                        container.classList.remove('selected');
+                                                    });
+
+                                                    element.classList.add('selected');
+                                                }
+
+                                            </script>
+                                            <script>
+
+                                            </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="image-box-setup">
+                                <div class="pt-4">
+                                    <div class="pt-4 ml-4 mr-4 mb-4 ">
+                                        <div class="d-flex justify-content-center">
+                                            <% if(Product) { %>
+                                                <img src="<%= Product.images %>" width="100%">
+                                                <% } else { %>
+                                                    <p>No product details available.</p>
+                                                    <% } %>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6 mb-4">
+                            <div class="image-box-setup">
+                                <div class="pt-4">
+                                    <div class="pt-4  mb-4 ">
+
+                                        <div class="col-md-8 mb-4 ">
+                                            <span>Superhero</span>
+                                            <p class="font-size-page"> The Batman - Red Hero Design Wall Decor Poster
+                                            </p>
+                                            <div class="d-flex align-items-center">
+                                                <% if(Product) { %>
+                                                    <span class="font-size-page">₹ <%= Product.product_price %></span>
+                                                    <span class="ml-4 price-off">₹ <%= Product.discount_price %></span>
+                                                    <% } else { %>
+                                                        <p>No product details available.</p>
+                                                        <% } %>
+
+
+                                            </div>
+
+                                            <div class="d-flex align-items-center">
+                                                <span class="font-size-page-normal-b">Tax included:</span>
+                                                <span class="ml-1 shipped-text-color"> Shipping</span>
+                                                <span class="ml-1">calculated at checkout</span>
+                                            </div>
+
+
+                                            <div>
+                                                <div class="d-flex pt-4">
+                                                    <div class="size-box ">
+                                                        <span>A3 Without Laminate</span>
+                                                        <svg width="8" height="5" viewBox="0 0 8 5" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0 0C0 0 3.4 4.4 3.5 4.4C3.7 4.4 7.1 0 7.1 0H0Z"
+                                                                fill="#101010" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="size-box ml-4 ">
+                                                        <div class="btn-quantity">
+                                                            <div onclick="decreaseQuantity()">-</div>
+                                                            <div>
+                                                                <input id="quantity-input" type="number" value="1"
+                                                                    min="1" readonly>
+
+                                                            </div>
+                                                            <div onclick="increaseQuantity()">+</div>
+                                                        </div>
+                                                        <script>
+
+
+
+
+                                                            function increaseQuantity() {
+                                                                var quantityInput = document.getElementById('quantity-input');
+                                                                var quantity = parseInt(quantityInput.value);
+                                                                quantityInput.value = quantity + 1;
+                                                            }
+
+                                                            function decreaseQuantity() {
+                                                                var quantityInput = document.getElementById('quantity-input');
+                                                                var quantity = parseInt(quantityInput.value);
+                                                                if (quantity > 1) {
+                                                                    quantityInput.value = quantity - 1;
+                                                                }
+                                                            }
+
+                                                            window.onload = setDefaultSelectedImage;
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <% if(Product) { %>
+
+
+                                                <form onsubmit="sendData(event,this)" data-method="add_to_cart_form">
+                                                    <input type="hidden" name="product_name"
+                                                        value="<%= Product.product_name %>">
+                                                    <input type="hidden" name="productId"
+                                                        value="<%= Product.productId %>">
+                                                    <div class="pt-4">
+                                                        <button type="submit"
+                                                            class="addtocartbutton btn_loader"><span>Add To
+                                                                Cart</span></button>
+                                                    </div>
+                                                </form>
+
+
+                                                <% } else { %>
+                                                    <p>No product details available.</p>
+                                                    <% } %>
+
+
+                                                        <div class="pt-4">
+                                                            <div class="buynowbutton"><span>Buy now</span></div>
+
+                                                        </div>
+                                                        <div class="pt-4  list-product">
+                                                            <li>Single The Batman Poster Comes Framed/Unframed  </li>
+                                                            <li>High-Quality Prints Using Non-Toxic Acrylic Ink imported
+                                                                on
+                                                                300 GSM
+                                                                Paper.</li>
+                                                            <li>1 Inch Thick - Mdf Moulding Handmade Frame, Shatter-
+                                                                Proof
+                                                                Styrene
+                                                                Facing, and Metal Hangers. </li>
+                                                            <li>Perfect for Wall Décor and to gift your friends and
+                                                                siblings.</li>
+                                                            <li>Great accessory to your home and to decorate your
+                                                                Offices
+                                                                around.
+                                                            </li>
+                                                            <li>Officially Licensed By Warner Bros, USA</li>
+                                                        </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            </div>
+        </section>
+
+
+        <section>
+            <div class="overflow-hidden">
+                <div class="container-fluid m-0 p-0">
+                    <div class="line-border"></div>
+                    <div class="tab-container tab-font pt-4 mb-4 Custom_paddding_wesite">
+                        <div class="tab" data-content="description">Description</div>
+                        <div class="tab" data-content="additional-info">Additional Information</div>
+                        <div class="tab" data-content="reviews">Reviews (0)</div>
+                    </div>
+
+                    <div class="content mb-4 Custom_paddding_wesite ">
+                        <div id="description" class="active">
+                            <div class="Shipping-text mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="tab-font">Shipping Info:</span>
+                                    <span> Orders made before 1PM are processed the same day and shipped the next day,
+                                        Otherwise order is processed the next day.</span>
+                                </div>
+                                <div class="d-flex align-items-center pt-3">
+                                    <span class="tab-font">Days to be shipped :</span>
+                                    <span> Shipped orders take 5-7 days to be delivered (Orders are not processed on
+                                        Sundays)</span>
+                                </div>
+                                <div class="d-flex align-items-center pt-3">
+                                    <span class="tab-font">Shipping Info:</span>
+                                    <span> Orders made before 1PM are processed the same day and shipped the next day,
+                                        Otherwise order is processed the next day.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="additional-info">
+                            <div class="Shipping-text mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="tab-font">Shipping Info:</span>
+                                    <span> Orders made before 1PM are processed the same day and shipped the next day,
+                                        Otherwise order is processed the next day.</span>
+                                </div>
+                                <div class="d-flex align-items-center pt-3">
+                                    <span class="tab-font">Days to be shipped :</span>
+                                    <span> Shipped orders take 5-7 days to be delivered (Orders are not processed on
+                                        Sundays)</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="reviews">
+                            <div class="Shipping-text mb-4">
+                                <div class="align-items-center pt-3 pb-4 ">
+                                    <div class="col-md-12 mb-4">
+                                        <div class="setup-related-product">
+                                            <div class="pt-4 mb-4">
+                                                <div class="ml-4 mr-4">
+                                                    <div class="ml-4 mr-4">
+                                                        <p>“Paranormic Prints offers exceptional poster printing with
+                                                            vibrant colors and
+                                                            sharp details. The high-quality paper and variety of
+                                                            finishes add a
+                                                            professional touch. Their efficient service and quick
+                                                            delivery make them a
+                                                            top choice for all printing needs.”</p>
+                                                        <div class="d-flex pt-1 mb-2">
+                                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="mb-4">
+                                                            <span class="font-size"> Regina Steam</span>
+                                                            <p>Naruto poster</p>
+                                                        </div>
+                                                        <div>
+                                                            <form onsubmit="sendData(event, this)"
+                                                                data-method="add_reviews_form">
+
+
+                                                                <label for="reviews" class="mb-2">Add Reviews</label>
+                                                                <textarea type="text" class="form-control" id="reviews"
+                                                                    name="reviews"
+                                                                    placeholder="Enter your product reviews"
+                                                                    style="width: 100%;"></textarea>
+
+                                                                <div class="mb-4">
+                                                                    <div class="d-flex justify-content-end">
+                                                                        <button type="submit"
+                                                                            class="btn px-4 mt-3 btn_loader"
+                                                                            style="background-color: black; color: white;"><span>Post</span></button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+
+
+
+
+
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mb-4">
+                                        <div class="setup-related-product">
+                                            <div class="pt-4 mb-4">
+                                                <div class="ml-4 mr-4">
+                                                    <div class="ml-4 mr-4">
+                                                        <p>“Paranormic Prints offers exceptional poster printing
+                                                            with
+                                                            vibrant colors and
+                                                            sharp details. The high-quality paper and variety of
+                                                            finishes add a
+                                                            professional touch. Their efficient service and quick
+                                                            delivery make them a
+                                                            top choice for all printing needs.”</p>
+                                                        <div class="d-flex pt-1 mb-2">
+                                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="mb-4">
+                                                            <span class="font-size"> Regina Steam</span>
+                                                            <p>Naruto poster</p>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-4">
+                                        <div class="setup-related-product">
+                                            <div class="pt-4 mb-4">
+                                                <div class="ml-4 mr-4">
+                                                    <div class="ml-4 mr-4">
+                                                        <p>“Paranormic Prints offers exceptional poster printing
+                                                            with
+                                                            vibrant colors and
+                                                            sharp details. The high-quality paper and variety of
+                                                            finishes add a
+                                                            professional touch. Their efficient service and quick
+                                                            delivery make them a
+                                                            top choice for all printing needs.”</p>
+                                                        <div class="d-flex pt-1 mb-2">
+                                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                            <svg class="ml-2" width="18" height="18" viewBox="0 0 18 18"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14.471 17.0948C13.8306 17.551 9.72167 14.6596 8.93471 14.6532C8.14775 14.6469 3.99252 17.4718 3.35961 17.0054C2.7267 16.5391 4.21464 11.7488 3.97752 11.0006C3.7404 10.2523 -0.237977 7.18459 0.0112308 6.44024C0.260494 5.69589 5.28905 5.62675 5.92943 5.17062C6.56982 4.71455 8.26631 -0.00629385 9.05333 6.30011e-06C9.84023 0.00636123 11.4601 4.75388 12.093 5.22026C12.7259 5.68658 17.7528 5.83668 17.9899 6.58492C18.2271 7.33316 14.1996 10.3365 13.9503 11.0808C13.7011 11.8252 15.1114 16.6387 14.471 17.0948Z"
+                                                                    fill="black" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="mb-4">
+                                                            <span class="font-size"> Regina Steam</span>
+                                                            <p>Naruto poster</p>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-border"></div>
+                </div>
+            </div>
+        </section>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const tabs = document.querySelectorAll('.tab');
+                const contents = document.querySelectorAll('.content > div');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+
+                        contents.forEach(content => content.classList.remove('active'));
+                        document.getElementById(tab.getAttribute('data-content')).classList.add('active');
+                    });
+                });
+
+
+                tabs[0].classList.add('active');
+                contents[0].classList.add('active');
+            });
+        </script>
+<style>
+    /* Hide the Add to Cart button initially */
+.see-cart-btn-box {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Show the button when hovering over the setup-related-product */
+.setup-related-product:hover .see-cart-btn-box {
+  opacity: 1;
+}
+
+/* Optional styling to make the hover effect smooth */
+.setup-related-product {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+</style>
+
+        <section>
+            <div class="overflow-hidden">
+                <div class="container-fluid p-0 m-0">
+                    <div class="Custom_paddding_wesite pt-4 mb-4">
+                        <p class="font-size-page pt-4 ">Related products</p>
+                        <div class="row pt-4 mb-4 Related-data-padding" id="card">
+                            <div class="col-md-3 mb-4 ">
+                                <div class="setup-related-product">
+                                    <div class="pt-4">
+                                        <div class="pt-4 ml-4 mr-4">
+                                            <img src="../public/assets/image 15.png" width="100%" class="image-setup">
+                                            <div class="text-center pt-4 mb-4 ">
+                                                <p class="font-size ">SPY X FAMILY - ANYA DESIGN WALL POSTER</p>
+
+                                                <p class="font-size-p  text-center">₹ 249.00</p>
+                                                <div class="d-flex justify-content-center">
+                                                    
+                                                    <div class="see-cart-btn-box"><span>Add to Cart</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="setup-related-product">
+                                    <div class="pt-4">
+                                        <div class="pt-4 ml-4 mr-4">
+                                            <img src="../public/assets/image 5 (1).png" width="100%"
+                                                class="image-setup">
+                                            <div class="text-center pt-4 mb-4 ">
+                                                <p class="font-size ">LOONEY TUNES SYLVESTER DESIGN WALL POSTER</p>
+                                                <p class="font-size-p  text-center">₹ 249.00</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="setup-related-product">
+                                    <div class="pt-4">
+                                        <div class="pt-4 ml-4 mr-4">
+                                            <img src="../public/assets/image 16.png" width="100%" class="image-setup">
+                                            <div class="text-center pt-4 mb-4 ">
+                                                <p class="font-size ">DEATH NOTE - CHECKERED DESIGN WALL POSTER</p>
+                                                <p class="font-size-p  text-center">₹ 249.00</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="setup-related-product">
+                                    <div class="pt-4">
+                                        <div class="pt-4 ml-4 mr-4">
+                                            <img src="../public/assets/image 17.png" width="100%" class="image-setup">
+                                            <div class="text-center pt-4 mb-4 ">
+                                                <p class="font-size ">ANIME - GOKU SUPER SAIYAN BLACK POSTER</p>
+                                                <p class="font-size-p  text-center">₹ 299.00</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <%- include('footer'); %>
+
+
+            <%- include('scripts'); %>
+
+</body>
+
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add product </title>
+    <%- include('links'); %>
+</head>
+
+<body>
+
+
+
+    <section>
+        <div class="overflow-hidden">
+            <div class="container">
+                <div class="row mb-4 pt-4 pb-4">
+                <form onsubmit="sendData_product(event,this)" data-method="add_categories_form">
+                            <div class="row pt-4 pb-4">
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="categories_name" class="mb-2">Categories Name</label>
+                                            <input type="text" class="form-control" id="categories_name" name="categories_name" placeholder="Enter your categories name">
+                                        </div>
+                                    </div>
+                                </div>
+                             <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="categories_img" class="form-label"> Upload Categories Img</label>
+                                            <input class="form-control" type="file" id="categories_imgupload" name="categories_imgupload" placeholder="Upload  categories_img">
+                                        </div>
+                                    </div>
+                                </div> 
+                              
+                             
+                            </div>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-center">
+                                </div>
+                                <button type="submit"  class="btn btn-primary submit  px-4 mt-3 btn_loader"><span>Submit</span></button>
+                            </div>
+                            <div class="row pt-4 pb-4">
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_name" class="mb-2">Product Name</label>
+                                            <input type="text" class="form-control" id="product_name" name="product_name"
+                                                placeholder="Enter your product name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_short_details" class="mb-2">Product Short details</label>
+                                            <textarea type="text" class="form-control" id="product_short_details"
+                                                name="product_short_details"
+                                                placeholder="Enter your Product Short details"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_main_details" class="mb-2">Enter Main details of
+                                                Product</label>
+                                            <textarea type="text" class="form-control" rows="4" id="product_main_details"
+                                                name="product_main_details"
+                                                placeholder="Enter product Main details"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_price" class="mb-2">Product Price</label>
+                                            <input type="number" class="form-control" id="product_price"
+                                                name="product_price" placeholder="Enter product price" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="discount_price" class="mb-2">Discount Price</label>
+                                            <input type="number" class="form-control" id="discount_price"
+                                                name="discount_price" placeholder="Enter Discount price" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_brand" class="mb-2">Product Brand</label>
+                                            <input type="text" class="form-control" id="product_brand"
+                                                name="product_brand" placeholder="Enter product_brand" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="sku" class="mb-2">sku</label>
+                                            <input type="text" class="form-control" id="sku"
+                                                name="sku" placeholder="Enter sku" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_weight" class="mb-2"> Product weight</label>
+                                            <input type="number" class="form-control" id="product_weight"
+                                                name="product_weight" placeholder="Enter product_weight" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_weight" class="mb-2"> stock</label>
+                                            <input type="number" class="form-control" id="stock"
+                                                name="stock" placeholder="Enter stock" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                           
+                                <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+                                <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+                                
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="product_imgupload" class="form-label">Upload Product Images</label>
+                                            <div class="dropzone" id="imageDropzone"></div>
+                                            <input type="file" name="product_images[]" id="product_images" multiple style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                             
+              
+                                <script>
+                                    Dropzone.autoDiscover = false;
+                                
+                                    const myDropzone = new Dropzone("#imageDropzone", {
+                                        url: "/", // This URL will not be used as we handle the upload manually
+                                        autoProcessQueue: false,
+                                        uploadMultiple: true,
+                                        addRemoveLinks: true,
+                                        clickable: true, // Enable click to open file dialog
+                                        init: function () {
+                                            const dropzoneInstance = this;
+                                            const fileInput = document.getElementById('product_images');
+                                
+                                            // Manually trigger file input click on Dropzone click
+                                            this.on("click", function () {
+                                                fileInput.click();
+                                            });
+                                
+                                            fileInput.addEventListener('change', function (event) {
+                                                const files = event.target.files;
+                                
+                                                // Add each selected file to Dropzone
+                                                for (let i = 0; i < files.length; i++) {
+                                                    dropzoneInstance.addFile(files[i]);
+                                                }
+                                            });
+                                
+                                            this.on("addedfile", function (file) {
+                                                const dataTransfer = new DataTransfer();
+                                
+                                                // Append existing files
+                                                for (let i = 0; i < fileInput.files.length; i++) {
+                                                    dataTransfer.items.add(fileInput.files[i]);
+                                                }
+                                
+                                                // Add new file
+                                                dataTransfer.items.add(file);
+                                
+                                                // Update file input
+                                                fileInput.files = dataTransfer.files;
+                                            });
+                                
+                                            this.on("removedfile", function (file) {
+                                                const dataTransfer = new DataTransfer();
+                                
+                                                // Append files excluding the removed one
+                                                for (let i = 0; i < fileInput.files.length; i++) {
+                                                    if (fileInput.files[i].name !== file.name) {
+                                                        dataTransfer.items.add(fileInput.files[i]);
+                                                    }
+                                                }
+                                
+                                                // Update file input
+                                                fileInput.files = dataTransfer.files;
+                                            });
+                                        }
+                                    });
+                                </script>
+    
+                           
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="categories" class="mb-2">Categories</label>
+                                            <select class="form-control" id="categories" name="categories" required>
+                                                <option>Anime</option>
+                                                <option>Supercars</option>
+                                                <option>Game</option>
+                                                <option>Movie</option>
+                                                <option>Aesthetic</option>
+                                                <option>Superhero</option>
+                                                <option>Cartoon</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+               
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="dimensions_width" class="mb-2">Width</label>
+                                            <input type="number" class="form-control" id="dimensions_width"
+                                                name="dimensions_width" placeholder="Enter product width" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="dimensions_height" class="mb-2">Height</label>
+                                            <input type="number" class="form-control" id="dimensions_height"
+                                                name="dimensions_height" placeholder="Enter product height" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="dimensions_depth" class="mb-2">Depth</label>
+                                            <input type="number" class="form-control" id="dimensions_depth"
+                                                name="dimensions_depth" placeholder="Enter product depth" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="rating" class="mb-2">Rating</label>
+                                            <input type="number" step="0.1" class="form-control" id="rating" name="rating"
+                                                placeholder="Enter product rating" required>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-center">
+                                    </div>
+                                    <button type="submit"class="btn btn-primary submit px-4 mt-3 btn_loader"><span>Submit</span></button>
+                                </div>
+                            </div>
+                        </form> 
+
+      
+
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <%- include('scripts'); %>
+
+</body>
+
+</html>

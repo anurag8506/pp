@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user registered</title>
+    <%- include('links'); %>
+
+
+
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <div>
+                <div class="d-flex justify-content-center pt-4 ">
+                    <div class="d-flex justify-content-center">
+
+
+                        <div class="pt-4 mb-4">
+                            <a href="/user-register" class="font-size-loginpage mr-4 pr-4">Registered</a>
+                            <a href="/loginpage" class="font-size-loginpage ml-4 pl-4">Login</a>
+                        </div>
+
+                    </div>
+
+                </div>
+                <form class="forms-sample" onsubmit="sendData_user_register(event, this)" data-method="user_register_form">
+                    <div class="row pt-4">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="exampleInputUsername1" class="form-label ">Username</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Username"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="userEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="userNumber" class="form-label">Mobile no</label>
+                                <input type="tel" class="form-control" id="mobileNo" name="mobileno"
+                                    placeholder="mobileNo" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="userprofile" class="form-label">Profile</label>
+                                <input type="file" class="form-control " id="profileUpload" name="profileUpload"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="userPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="passaword" name="passaword"
+                                    placeholder="Password" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="userPassword" class="form-label">repeatPassword</label>
+                                <input type="password" class="form-control" id="repeatPassword" name="repeatPassword"
+                                    placeholder="Password" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="font-size-user">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
+                          
+
+                        </div>
+                        <div class="col-md-12 ">
+                            <div style="justify-content: center; text-align: center;">
+                                <button type="submit"  style="background-color: black; padding: 10px; border-radius: 40px; color: white; justify-content: center; align-items: center; text-align: center; width: 150px;"
+                                    class="btn  btn_loader"><span>Register</span></button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </section>
+
+
+    <%- include('scripts'); %>
+
+ 
+
+
+</body>

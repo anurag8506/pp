@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+  <%- include('links'); %>
+</head>
+
+<body>
+  <%- include('Header'); %>
+
+    <style>
+      .checkout-img-box {
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 20px;
+        ;
+      }
+
+.left-col {
+  position: -webkit-sticky; 
+  position: sticky;
+
+
+}
+
+.right-col {
+  max-height: 112vh; 
+  overflow-y: auto; 
+}
+
+    </style>
+    <section>
+      <div class="overflow-hidden">
+        <div class="container-fluid p-0 m-0">
+          <div class="row pt-4 pt-5  Custom_paddding_wesite">
+            <p class="font-size-cart pt-4 mb-4">Select Payment Methods</p>
+          </div>
+          <form onsubmit="sendData(event, this)" data-method="checkOutForm">
+
+            <div class="row  Custom_paddding_wesite align-items-start pb-5">
+              <div class="col-md-6 d-flex left-col flex-column">
+                <div class="flex-grow-1">
+
+                  <div>
+                    <div class="form-control mb-4">
+                      <input class="form-check-input radio mb-0 ml-1 p-0 " type="radio" name="paymentMethod" id="Cards"
+                        value="Cards">
+                      <label class="form-check-label mb-0 ml-4 p-0" for="Cards">Cards</label>
+                    </div>
+                    <div class="form-control mb-4">
+                      <input class="form-check-input radio mb-0 ml-1 p-0 " type="radio" name="paymentMethod" id="UPI"
+                        value="UPI">
+                      <label class="form-check-label mb-0 ml-4 p-0" for="UPI">UPI</label>
+                    </div>
+                    <div class="form-control mb-4">
+                      <input class="form-check-input radio mb-0 ml-1 p-0 " type="radio" name="paymentMethod"
+                        id="Net banking" value="Net banking">
+                      <label class="form-check-label mb-0 ml-4 p-0" for="Cards">Net banking</label>
+                    </div>
+
+                    <p class="font-size">Billing Address</p>
+                    <div class="checkout-img-box">
+                      <div class="row">
+                        <div class="col-md-12 mb-4">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Same as my billing address
+                            </label>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-md-12">
+                        <div class="mb-3">
+                          <label for="exampleInputUsername1" class="form-label ">Username</label>
+                          <input type="text" class="form-control" id="name" name="name" placeholder="Username" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="mb-3">
+                          <label for="userEmail" class="form-label">Email address</label>
+                          <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="product_price" class="mb-2">Phone Number</label>
+                          <input type="tel" class="form-control" id="mobileNo" name="mobileno"
+                            placeholder="Enter your Phone Number" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="product_price" class="mb-2">Street name & house number</label>
+                          <input type="text" class="form-control" id="address" name="address"
+                            placeholder="Enter your street name & house number" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group m-b25">
+                          <label class="label-title">ZIP Code *</label>
+                          <input id="zipcode" name="zipcode" required="" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="m-b25">
+                          <label class="label-title">Town / City *</label>
+                          <select id="town" name="town" class="default-select form-select  form-control">
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="m-b25">
+                          <label class="label-title">State *</label>
+                          <select id="state" name="state" class="default-select form-select form-control">
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+<div class="pt-4">
+  <div class="information-remeber-setup "
+    style="border:1px solid black; border-radius: 5px; padding: 20px;">
+    <h4 class="font-size">Remember my information</h4>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+      <label class="form-check-label" for="flexCheckChecked">Save my information for my future
+        checkout</label>
+    </div>
+  </div>
+
+</div>
+              </div>
+
+              <div class="col-md-6 d-flex flex-column right-col ">
+                <div class="checkout-img-box">
+                  <div class="flex-grow-1">
+                    <div >
+                      <p class="font-size"> Your Order</p>
+                      <table>
+                        <tbody>
+                          <% 
+                          shippingCost=0;
+                            let totalCartPrice = 0; 
+                            const taxRate = 0.18; // 18% tax
+                          %>
+                      
+                          <% if (Cart.length > 0) { %>
+                            <% 
+                              for (let i = 0; i < Cart.length; i++) { 
+                                const productPrice = parseFloat(Cart[i].productDetails.product_price); 
+                                const quantity = parseInt(Cart[i].quantity); 
+                                const itemTotalPrice = productPrice * quantity;
+                                totalCartPrice += itemTotalPrice; 
+                            %>
+                            <!-- Hidden fields for each product -->
+                            <input type="hidden" name="productId[]" value="<%= Cart[i].productDetails.productId %>">
+                            <input type="hidden" name="productName[]" value="<%= Cart[i].productDetails.product_name %>">
+                            <input type="hidden" name="productPrice[]" value="<%= productPrice %>">
+                            <input type="hidden" name="productQuantity[]" value="<%= quantity %>">
+                            
+                            <tr data-product-id="<%= Cart[i].productDetails.product_id %>">
+                              <td data-label="Products" class="product-image-setup-box">
+                                <div class="d-flex align-items-center product-image-box" style="justify-content: space-between;">
+                                  <div class="row align-items-center mb-4">
+                                    <div class="col-md-3">
+                                      <input type="hidden" name="image[]" value="<%= Cart[i].productDetails.images[0] %>">
+                                      <img src="<%= Cart[i].productDetails.images[0] %>" alt="Product Image" class="img-fluid" width="100%">
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="pr-4 mr-4">
+                                        <span class="details-text font-size-product-text mr-4">
+                                          <%= Cart[i].productDetails.product_name %>
+                                        </span>
+                                        <p data-label="Price" class="font-size-price item-price" id="item-price-total" data-price="<%= itemTotalPrice %>">
+                                          ₹<%= itemTotalPrice %>
+                                        </p>
+                                     
+                                      </div>
+                                   
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="size-box-table text-center" style="width: 100%;">
+                                      
+                                          <div class="size-box-table text-center">
+                                              <div class="btn-quantity">
+                                                  <div class="decrease" data-product-id="<%= Cart[i].productId %>">-</div>
+                                                  <div>
+                                                      <input class="quantity-input" id="quantity-input-<%= i %>" type="number" value="<%= Cart[i].quantity %>" min="1">
+                                                  </div>
+                                                  <div class="increase" data-product-id="<%= Cart[i].productId %>">+</div>
+                                              </div>
+                                          </div>
+                                    
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <% } %>
+                          <% } else { %>
+                            <tr>
+                              <td colspan="5" class="text-center">No items in the cart</td>
+                            </tr>
+                          <% } %>
+                      
+                          <tr class="shipping" id="shippingOptions">
+                            <td>
+                              <h6 class="title font-size">Shipping</h6>
+                              <div class="custom-control custom-checkbox" style="display: flex;">
+                                <input class="form-check-input radio" type="radio" name="shippingOption" id="paymentMethod1" value="0">
+                                <label id="airLabel" class="form-check-label" for="paymentMethod1"></label>
+                              </div>
+                              <div class="custom-control custom-checkbox" style="display: flex;">
+                                <input class="form-check-input radio" type="radio" name="shippingOption" id="paymentMethod2" value="0">
+                                <label id="surfaceLabel" class="form-check-label" for="paymentMethod2"></label>
+                              </div>
+                            </td>
+                          </tr>
+                      
+                        </tbody>
+                      </table>
+                      
+                                
+                                      <p class="font-size pt-4 mt-4"> Discount code</p>
+                                      <div class="p-0 mb-0 applycode-box">
+                                        <input type="text" class="form-control mb-0" placeholder="Enter discount code"
+                                          id="input-text-code">
+                                        <div class="applycode-box-txt">
+                                          <span>Apply code</span>
+                                        </div>
+                                      </div>
+                                  
+                                      <p class="pt-4">New customer? Sign up to get better offer</p>
+                                      <div class="pt-4"></div>
+                                      <tr class="pt-4">
+                                        <td colspan="5">
+                                          <div class="d-flex justify-content-between align-items-center">
+                                            <p class="font-size">Subtotal</p>
+                                 
+                                         
+                                        
+                                            <p id="subtotal" class="font-size-price">₹<%= totalCartPrice.toFixed(2) %></p>
+                                          </div>
+                                          <div class="d-flex justify-content-between align-items-center">
+                                            <p class="font-size">Tax (18%)</p>
+                                            <% 
+                                              const taxedPrice = totalCartPrice * taxRate;
+                                              const totalAfterTax = totalCartPrice + taxedPrice;
+                                              const grandTotal = totalAfterTax + shippingCost;
+                                            %>
+                                            <p id="tax" class="font-size-price">₹<%= taxedPrice.toFixed(2) %></p>
+                                          </div>
+                                          <div class="d-flex justify-content-between align-items-center">
+                                            <p class="font-size">Total after Tax</p>
+                                            <p id="totalAfterTax" class="font-size-price">₹<%= totalAfterTax.toFixed(2) %></p>
+                                          </div>
+                                          <div class="d-flex justify-content-between align-items-center">
+                                            <p class="font-size">Shipping Cost</p>
+                                            <p id="shippingCost" class="font-size-price">₹0.00</p>
+                                          </div>
+                                          <div class="line-border"></div>
+                                          <div class="d-flex justify-content-between align-items-center pt-4">
+                                            <input type="hidden"  id = "grandTotal_input" name="grandTotal" value="<%= grandTotal.toFixed(2) %>">
+                                            <p class="font-size">Grand Total</p>
+                                          
+                                          
+                                            <p id="grandTotal" class="font-size-price">₹<%= grandTotal.toFixed(2) %></p>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                 
+                      
+                    </div>
+                  </div>
+                  <div class="mt-auto">
+                    <button type="submit"  class="btn_loader" style="background-color: black; text-align: center; align-items: center; padding: 10px; border-radius: 5px; color: white; width: 100%;">
+                      <span>Continue to payment</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+    <%- include('footer'); %>
+
+
+
+      <%- include('scripts'); %>
+       <script>
+        $(document).ready(function () {
+  $('#zipcode').on('change', function () {
+    var zipcode = $(this).val();
+    console.log('ZIP code:', zipcode);
+
+    $.post('/get-location', { Zipcode: zipcode }, function (data) {
+      console.log('Server response:', data);
+
+      if (data) {
+        if (data.location) {
+          $('#town').empty();
+          $('#state').empty();
+          for (let i = 0; i < data.location.length; i++) {
+            $('#town').append('<option value="' + data.location[i]._id + '">' + data.location[i].place + '</option>');
+          }
+          $('#state').append('<option value="' + data.location[0].state_code + '">' + data.location[0].state + '</option>');
+        }
+        
+        if (data.serviceProvide) {
+          var serviceProvide = data.serviceProvide;
+          var airDeliveryDate = new Date();
+          airDeliveryDate.setDate(airDeliveryDate.getDate() + parseInt(serviceProvide.air.AirexpectedDelivery));
+          var surfaceDeliveryDate = new Date();
+          surfaceDeliveryDate.setDate(surfaceDeliveryDate.getDate() + parseInt(serviceProvide.surface.SurfaceexpectedDelivery));
+
+          var airLabel = serviceProvide.air.AirDeliveryPartner + ', ' + airDeliveryDate.getDate() + "/" + (airDeliveryDate.getMonth() + 1) + "/" + airDeliveryDate.getFullYear() + ', ₹' + Math.round(serviceProvide.air.AirexpectedRate);
+          var surfaceLabel = serviceProvide.surface.SurfaceDeliveryPartner + ', ' + surfaceDeliveryDate.getDate() + "/" + (surfaceDeliveryDate.getMonth() + 1) + "/" + surfaceDeliveryDate.getFullYear() + ', ₹' + Math.round(serviceProvide.surface.SurfaceexpectedRate);
+
+          document.getElementById('airLabel').innerText = airLabel;
+          document.getElementById('surfaceLabel').innerText = surfaceLabel;
+
+       
+          document.getElementById('paymentMethod1').value = Math.round(serviceProvide.air.AirexpectedRate);
+          document.getElementById('paymentMethod2').value = Math.round(serviceProvide.surface.SurfaceexpectedRate);
+
+          $('#shippingOptions').show();
+        }
+      }
+    });
+  });
+
+
+  $('input[name="shippingOption"]').on('change', function () {
+    var shippingCost = parseFloat($(this).val());
+    var subtotal = parseFloat($('#subtotal').text().replace('₹', ''));
+    var tax = parseFloat($('#tax').text().replace('₹', ''));
+    var totalAfterTax = subtotal + tax;
+    var grandTotal = totalAfterTax + shippingCost;
+   
+
+    $('#shippingCost').text('₹' + shippingCost.toFixed(2));
+    $('#grandTotal').text('₹' + grandTotal.toFixed(2));
+    $('#grandTotal_input').val(grandTotal.toFixed(2));
+
+  });
+});
+
+       </script>
+</body>
+<style>
+    #shippingOptions {
+    display: none;
+  }
+</style>
+</html>

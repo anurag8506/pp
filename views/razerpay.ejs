@@ -1,0 +1,198 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Razorpay Web-Integration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('links')%>
+    <style>
+        #PayNowBtn {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            border-radius: 20px;
+            text-align: center;
+            align-self: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="payemnt-page-ui pt-4">
+            <div class="col-md-12 pt-4">
+                <div style="display: none;">
+                    <h3> Hi
+                        <% for(let i=0; i < UserOrder.length; i++) { %>
+                            <%= UserOrder[i].name %>
+                    </h3>
+    
+                    <span class="mb-4">We’re excited to let you know that your order has been confirmed and is on its way to you.</span>
+    
+                    <table class="table my-table pt-4 font-size">
+                        <tr>
+                            <th>Product</th>
+                            <th>Product Name</th>
+                            <th class="fortextcenter">Quantity</th>
+                            <th class="fortextend">Price</th>
+                        </tr>
+                        <% 
+                        let subtotal = 0;
+                        let productNames = []; // Array to hold product names
+                        for(let j=0; j < UserOrder[i].products.length; j++) { 
+                            let productTotal = UserOrder[i].products[j].productPrice * UserOrder[i].products[j].productQuantity;
+                            subtotal += productTotal;
+                            productNames.push(UserOrder[i].products[j].productName); // Add product name to array
+                        %>
+                            <tr>
+                                <td>
+                                    <img src="<%= UserOrder[i].products[j].image %>" alt="Product Image" width="20%">
+                                </td>
+                                <td class="fortextcenter font-size">
+                                    <%= UserOrder[i].products[j].productName %>
+                                </td>
+                                <td class="fortextcenter">
+                                    <%= UserOrder[i].products[j].productQuantity %>
+                                </td>
+                                <td class="fortextend">
+                                    ₹ <%= UserOrder[i].products[j].productPrice %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </table>
+    
+                    <% 
+                    let tax = subtotal * 0.18; // 18% tax
+                    let totalWithTax = subtotal + tax;
+                    let grandTotal = totalWithTax + parseFloat(UserOrder[i].shippingOption);
+                    let productNamesString = productNames.join(", "); // Join product names into a single string
+                    %>
+    
+                    <div class="pt-4">
+                        <div class="d-flex justify-content-between font-size">
+                            <h5>Subtotal</h5>
+                            <h5>₹ <%= subtotal.toFixed(2) %></h5>
+                        </div>
+                        <div class="d-flex justify-content-between font-size">
+                            <h5>Tax (18%)</h5>
+                            <h5>₹ <%= tax.toFixed(2) %></h5>
+                        </div>
+                        <div class="d-flex justify-content-between font-size">
+                            <h5>Shipping Charge</h5>
+                            <h5>₹ <%= UserOrder[i].shippingOption %></h5>
+                        </div>
+                        <div class="d-flex justify-content-between font-size">
+                            <h4>Grand Total</h4>
+                            <h4>₹ <%= grandTotal.toFixed(2) %></h4>
+                        </div>
+                    </div>
+
+                </div>
+
+                <form class="pay-form">
+                    <input type="hidden" name="amount" value="<%= grandTotal.toFixed(2) %>">
+                 
+                    <div class="pt-4">
+                        <input type="submit" value="Pay Now" class="col-md-12" id="PayNowBtn">
+                    </div>
+                </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <%- include('scripts')%>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+     <script>
+        $(document).ready(function () {
+            $('.pay-form').submit(function (e) {
+                e.preventDefault();
+        
+                var formData = $(this).serialize();
+        
+                $.ajax({
+                    url: "/createOrder",
+                    type: "POST",
+                    data: formData,
+                    success: function (res) {
+                        if (res.success) {
+                            var options = {
+                                "key": res.key_id,
+                                "amount": res.amount,
+                                "currency": "INR",
+                                "name": res.product_name,
+                                "description": res.description,
+                                "image": "https://dummyimage.com/600x400/000/fff",
+                                "order_id": res.order_id,
+                                "handler": function (response) {
+                                    $.ajax({
+                                        url: "/updateOrder",
+                                        type: "POST",
+                                        data: {
+                                            orderId: res.order_id, // Use res.order_id here
+                                            paymentAmount: res.amount,
+                                            paymentstatus: 'paid',
+                                            transactionId: response.razorpay_payment_id,
+                                            razorpay_orderId: response.razorpay_order_id
+                                        },
+                                        success: function (res) {
+                                            if (res.success) {
+                                                window.location.href = "/completeRazorpay/" + res.orderId; // Use res.orderId for navigation
+                                            } else {
+                                                alert("Failed to update order");
+                                            }
+                                        }
+                                    });
+                                },
+                                "prefill": {
+                                    "contact": res.contact,
+                                    "name": res.name,
+                                    "email": res.email
+                                },
+                                "notes": {
+                                    "description": res.description
+                                },
+                                "theme": {
+                                    "color": "#2300a3"
+                                }
+                            };
+                            var razorpayObject = new Razorpay(options);
+                            razorpayObject.on('payment.failed', function (response) {
+                                $.ajax({
+                                    url: "/updateOrder",
+                                    type: "POST",
+                                    data: {
+                                        orderId: res.order_id, // Use res.order_id here
+                                        paymentAmount: res.amount,
+                                        paymentstatus: 'failed',
+                                        transactionId: response.error.metadata.payment_id,
+                                        razorpay_orderId: response.error.metadata.order_id
+                                    },
+                                    success: function (res) {
+                                        if (!res.success) {
+                                            alert("Failed to update order status");
+                                        }
+                                    }
+                                });
+                                alert("Payment Failed");
+                            });
+                            razorpayObject.open();
+                        } else {
+                            alert(res.msg);
+                        }
+                    }
+                });
+            });
+        });
+        </script> 
+    
+            
+
+   
+
+</body>
+
+</html>

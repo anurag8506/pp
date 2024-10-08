@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8" />
+    <title>Razorpay Web-Integration</title>
+
+
+    <%- include('link')%>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="payemnt-page-ui">
+            <div class="col-md-12">
+                <h1 class="payment-heading">Cloud_essentials</h1>
+                <h3> Hi <% for(let i=0; i < UserOrder.length; i++) { %>
+
+                        <%= UserOrder[i].firstName %>
+
+                            <% } %>
+                </h3>
+
+                <% let subtotal=0; let totalShippingCost=0; let taxRate=0.18; for(let i=0; i < UserOrder.length; i++) {
+                    let totalPrices=[]; for(let j=0; j < UserOrder[i].productQuantity.length; j++) { let
+                    totalPrice=UserOrder[i].productQuantity[j] * UserOrder[i].productPrice[j];
+                    totalPrices.push(totalPrice); subtotal +=totalPrice; } let
+                    shippingOptionParts=UserOrder[i].shippingOption.split(','); let
+                    shippingCost=parseFloat(shippingOptionParts[2].replace('₹', '' )); totalShippingCost +=shippingCost;
+                    } let taxCharge=(subtotal * taxRate).toFixed(2); let totalCost=subtotal +
+                    totalShippingCost+parseFloat(taxCharge); %>
+
+
+
+                    <span>We’re excited to let you know that your order has been confirmed and is on its way to
+                        you.</span>
+                    <p>
+                        You’ve made a great choice by choosing Cloud_essentials Team, the ultimate tough watch.</p>
+
+
+
+                    <table class="table my-table">
+                        <tr>
+                            <th>Product</th>
+                            <th class="fortextcenter">Quantity</th>
+                            <th class="fortextend"> Price</th>
+                        </tr>
+
+                        <% for(let i=0; i < UserOrder.length; i++) { let totalPrices=[]; for(let j=0; j <
+                            UserOrder[i].productQuantity.length; j++) { let totalPrice=UserOrder[i].productQuantity[j] *
+                            UserOrder[i].productPrice[j]; totalPrices.push(totalPrice);%>
+                            <tr>
+                                <td ><%- UserOrder[i].productName[j] %></td>
+                                <td class="fortextcenter"><%- UserOrder[i].productQuantity[j] %></td>
+                                <td class="fortextend" > ₹<%- totalPrices[j] %></td>
+                            </tr>
+                            <% }} %>
+                    </table>
+
+
+                    <div class="payment-amount" id="payment-amount">
+                        <h5>Subtotal:</h5>
+                        <h5>₹ <%= subtotal.toFixed(2) %>
+                        </h5>
+                    </div>
+
+                    <div class="payment-amount">
+                        <span>Tax (18%):</span>
+                        <span> ₹<%= (subtotal * 0.18).toFixed(2) %>
+                        </span>
+                    </div>
+                    <% for(let i=0; i < UserOrder.length; i++) { %>
+                        <div class="payment-amount">
+                            <span>Shipping:</span>
+                            <span>
+                                <% let shippingOptionParts=UserOrder[i].shippingOption.split(','); %>
+                                    <%= shippingOptionParts[2] %>
+                            </span>
+                        </div>
+                        <% for(let i=0; i < UserOrder.length; i++){ %>
+                            <div class="payment-amount ">
+                                <p>Payent Amount</p>
+                                <h6> ₹ <%= UserOrder[i].paymentAmount %>
+                                </h6>
+                            </div>
+                            <div class="payment-amount ">
+                                <span>Payent Number</span>
+                                <span>
+                                    <%= UserOrder[i].confirmOrderId %>
+                                </span>
+                            </div>
+                            <div class="payment-amount ">
+                                <span>Payent Date</span>
+                                <span>
+                                    <%= UserOrder[i].paymentDate %>
+                                </span>
+                            </div>
+                         
+
+                            <% } %>
+                        <div class="payment-amount">
+                            <span>payment status:</span>
+                            <h5>
+                                <%= UserOrder[i].paymentstatus %>
+                            </h5>
+                        </div>
+                        <% } %>
+
+
+
+
+
+                            <hr class="line">
+                            <div class="payment-amount">
+                                <h4>Total:</h4>
+                                <h4>₹<%= totalCost.toFixed(2) %>
+                                </h4>
+                            </div>
+                            <div class="payment-table">
+                                <span>You can track your order status and delivery progress by clicking <a
+                                    href="#"> here </a></span>
+                                    <p>Thank you for shopping with us and being part of the Cloud_essentials Team.</p>
+
+                                <p>Sincerely,</p>
+                                <h5 class="margin-bottom-20px">Cloud_essentials Team</h5>
+
+                                <% for(let i=0; i < UserOrder.length; i++) { let totalPrices=[]; for(let j=0; j <
+                                    UserOrder[i].productQuantity.length; j++) { let
+                                    totalPrice=UserOrder[i].productQuantity[j] * UserOrder[i].productPrice[j];
+                                    totalPrices.push(totalPrice); } %>
+
+                                
+                                        <div id="print-button" class="col-md-12 no-print" id="PayNowBtn">Download Recipt</div>
+
+                                 
+
+
+                                    <% } %>
+
+
+                            </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+    <script type="text/javascript">
+        document.getElementById("print-button").addEventListener("click", function () {
+            window.print();
+        });
+    </script>
+</body>
+
+</html>
+
